@@ -10,6 +10,7 @@ class Key
 end
 
 k = Key.new
+Mailman = RubyMailman::Mailman
 
 Mailman.send(:create, k)
 Mailman.send(:update, k)
@@ -20,6 +21,55 @@ Mailman.update(k)
 Mailman.destroy(k)
 
 Mailman.subscribe(channel: :key, history: :all)
+```
+
+### Responses
+
+Central Services has 3 types of response:
+- success ('OK')
+- retry ('Retry')
+- failure ('Fail')
+
+#### Success
+
+```ruby
+response = Mailman.send(:create, obj)
+response.success?
+#=> true
+response.retry?
+#=> false
+response.fail?
+#=> false
+response.body
+#=> 'OK'
+```
+
+#### Retry
+
+```ruby
+response = Mailman.send(:create, obj)
+response.success?
+#=> false
+response.retry?
+#=> true
+response.fail?
+#=> false
+response.body
+#=> 'Retry'
+```
+
+#### Failure
+
+```ruby
+response = Mailman.send(:create, obj)
+response.success?
+#=> false
+response.retry?
+#=> false
+response.fail?
+#=> true
+response.body
+#=> 'Fail'
 ```
 
 ## Setup
