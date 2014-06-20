@@ -14,7 +14,7 @@ Mailman = RubyMailman::Mailman
 
 Mailman.send(:create, k)
 Mailman.send(:update, k)
-Mailman.send(:update, k)
+Mailman.send(:destroy, k)
 
 Mailman.create(k)
 Mailman.update(k)
