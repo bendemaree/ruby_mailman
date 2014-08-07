@@ -7,15 +7,15 @@ module RubyMailman
       self.new(action, obj, cs).send
     end
 
-    def self.create(obj, cs)
+    def self.create(obj, cs=CentralServiceInterface)
       self.send(:create, obj, cs)
     end
 
-    def self.update(obj, cs)
+    def self.update(obj, cs=CentralServiceInterface)
       self.send(:update, obj, cs)
     end
 
-    def self.destroy(obj, cs)
+    def self.destroy(obj, cs=CentralServiceInterface)
       self.send(:destroy, obj, cs)
     end
 

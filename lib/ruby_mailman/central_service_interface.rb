@@ -27,7 +27,6 @@ class ZMQClient
     connect(:request)
     configuration.request.send_strings(connection, [action.to_s, object.to_s])
     configuration.response.recv_strings(connection)
-    configuration.response
   end
 
   private
@@ -75,7 +74,8 @@ class ZMQConnection
     when :request
       connection = context.socket(ZMQ::REQ)
     end
-    connection.connect(server)
+    connection.connect('tcp://127.0.0.1:2200')
+    connection
   end
 
   private
