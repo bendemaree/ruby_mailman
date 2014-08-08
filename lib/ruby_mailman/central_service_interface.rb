@@ -26,7 +26,7 @@ class ZMQClient
   def request(action, object)
     connect(:request)
     configuration.request.send_strings(connection, [action.to_s, object.to_s])
-    configuration.response.recv_strings(connection)
+    configuration.response.recv_string(connection)
   end
 
   private
@@ -98,8 +98,8 @@ class ZMQResponse
     self.new
   end
 
-  def recv_strings(connection,receiver = [])
-    connection.recv_strings(receiver)
+  def recv_string(connection,receiver = "")
+    connection.recv_string(receiver)
     receiver
   end
 end

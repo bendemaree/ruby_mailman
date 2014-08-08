@@ -2,6 +2,8 @@ module RubyMailman
   class Response
     attr_reader :body
     def self.build(raw_response)
+      #Both a string "200" and an array ["200"]
+      raw_response = Array(raw_response).join
       case raw_response
       when "200"
         SuccessResponse.new(raw_response)
@@ -52,5 +54,3 @@ module RubyMailman
     end
   end
 end
-
-

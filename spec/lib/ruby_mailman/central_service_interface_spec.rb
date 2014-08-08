@@ -34,7 +34,7 @@ RSpec.describe ZMQClient do
       @configuration = ZMQClientConfiguration.default
       @connection_double = double(ZMQConnection)
       allow(@connection_double).to receive(:send_strings) { true }
-      allow(@connection_double).to receive(:recv_strings) { [] }
+      allow(@configuration.response).to receive(:recv_string) { "" }
       allow(@configuration.connection).to receive(:connect) { @connection_double }
     end
 
@@ -51,7 +51,7 @@ RSpec.describe ZMQClient do
     it "returns what the response gets" do
       executed_request = Object.new
       allow(@configuration.request).to receive(:send_strings).with(@connection_double, [@action.to_s, @object.to_s] ) { executed_request }
-      expect(@configuration.response).to receive(:recv_strings).with(@connection_double) { [] }
+      expect(@configuration.response).to receive(:recv_string).with(@connection_double) { "" }
       ZMQClient.new(@configuration).request(@action, @object)
     end
   end
@@ -122,13 +122,13 @@ RSpec.describe ZMQResponse do
     end
   end
 
-  describe "recv_strings" do
-    let (:receiver) { [] }
+  describe "recv_string" do
+    let (:receiver) { "" }
 
-    it "uses the connection's recv_strings and returns the provided receiver" do
+    it "uses the connection's recv_string and returns the provided receiver" do
       connection_double = Object.new
-      expect(connection_double).to receive(:recv_strings).with(receiver) { true }
-      it = ZMQResponse.new.recv_strings(connection_double, receiver)
+      expect(connection_double).to receive(:recv_string).with(receiver) { true }
+      it = ZMQResponse.new.recv_string(connection_double, receiver)
       expect(it).to eq(receiver)
     end
   end
