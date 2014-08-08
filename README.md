@@ -26,9 +26,9 @@ Mailman.subscribe(channel: :key, history: :all)
 ### Responses
 
 Central Services has 3 types of response:
-- success ('OK')
-- retry ('Retry')
-- failure ('Fail')
+- success ('200')
+- retry ('409')
+- failure ('500')
 
 #### Success
 
@@ -41,7 +41,7 @@ response.retry?
 response.fail?
 #=> false
 response.body
-#=> 'OK'
+#=> '200'
 ```
 
 #### Retry
@@ -55,7 +55,7 @@ response.retry?
 response.fail?
 #=> false
 response.body
-#=> 'Retry'
+#=> '409'
 ```
 
 #### Failure
@@ -69,7 +69,7 @@ response.retry?
 response.fail?
 #=> true
 response.body
-#=> 'Fail'
+#=> '500'
 ```
 
 ## Setup
