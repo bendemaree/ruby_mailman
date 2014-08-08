@@ -1,11 +1,15 @@
 require 'spec_helper'
-require_relative "../lib/ruby_mailman"
+require_relative "../../../lib/ruby_mailman"
 
 Mailman = RubyMailman::Mailman
 
-describe RubyMailman::Mailman do
+describe Mailman do
   let (:cs_interface_double) { double(CentralServiceInterface) }
   let (:object_double) { Object.new }
+
+  before do
+    allow(RubyMailman::Response).to receive(:build) { Object.new }
+  end
 
   describe "notifies of creation" do
     it "has the CentralServiceInterface do the work" do
