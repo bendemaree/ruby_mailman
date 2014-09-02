@@ -62,6 +62,31 @@ describe Mailman do
     end
   end
 
-  describe "subscription" do
+  describe "subscribe" do
+    let(:args) { {channel: 'test', callback: Object.new, options: {}} }
+
+    it "implements the method" do
+      expect(Mailman.respond_to?(:subscribe)).to be_truthy
+    end
+
+    it "requires a channel" do
+      args.delete(:channel)
+      expect { Mailman.subscribe(args) }.to raise_error(ArgumentError)
+    end
+
+    it "requires a callback" do
+      args.delete(:callback)
+      expect { Mailman.subscribe(args) }.to raise_error(ArgumentError)
+    end
+
+    it "does not require options" do
+      args.delete(:options)
+      Mailman.subscribe(args)
+    end
+
+    it "builds a RubyMailman::Subscription" do
+      expect(RubyMailman::Subscription).to receive(:build).with(args[:channel], args[:callback], args[:options])
+      Mailman.subscribe(args)
+    end
   end
 end
