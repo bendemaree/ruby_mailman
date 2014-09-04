@@ -1,9 +1,4 @@
 module RubyMailman
-  class Subscription
-    def self.build(channel, callback, options)
-    end
-  end
-
   class Mailman
     def self.send(action, obj, cs = CentralServiceInterface)
       self.new(action, obj, cs).send
