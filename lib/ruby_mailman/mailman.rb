@@ -16,18 +16,6 @@ module RubyMailman
       self.send(:destroy, obj, cs)
     end
 
-    def self.subscribe(args)
-      channel = args.fetch(:channel) do
-        raise ArgumentError, "Subscribtion requries a channel"
-      end
-
-      callback = args.fetch(:callback) do
-        raise ArgumentError, "Subscribtion requries a callback"
-      end
-
-      RubyMailman::Subscription.build(channel, callback, args[:options])
-    end
-
     def initialize(action, object, central_service)
       self.action = action
       self.object = object

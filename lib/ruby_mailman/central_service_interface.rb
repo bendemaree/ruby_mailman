@@ -14,6 +14,9 @@ class CentralServiceInterface
     central_service_client.new.request(action,object)
   end
 
+  def subscribe(channel, listener, options)
+  end
+
   private
   attr_accessor :central_service_client
 end
