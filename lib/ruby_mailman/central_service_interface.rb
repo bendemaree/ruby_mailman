@@ -6,6 +6,10 @@ class CentralServiceInterface
     self.new(cs_client).send(action,object)
   end
 
+  def self.subscribe(channel, listener, options, cs_client = ZMQClient)
+    self.new(cs_client).subscribe(channel, listener, options)
+  end
+
   def initialize(cs_client)
     self.central_service_client = cs_client
   end
@@ -15,6 +19,7 @@ class CentralServiceInterface
   end
 
   def subscribe(channel, listener, options)
+    central_service_client.new.subscribe(channel, listener, options)
   end
 
   private
@@ -30,6 +35,9 @@ class ZMQClient
     connect(:request)
     configuration.request.send_strings(connection, [action.to_s, object.to_s])
     configuration.response.recv_string(connection)
+  end
+
+  def subscribe(channel, listener, options)
   end
 
   private
