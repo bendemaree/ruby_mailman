@@ -3,8 +3,8 @@ class CentralServiceInterface
     self.new(cs_client).send(action,object)
   end
 
-  def self.subscribe(channel, listener, options, cs_client = CSTransportClient)
-    self.new(cs_client).subscribe(channel, listener, options)
+  def self.subscribe(channel, listener, cs_client = CSTransportClient)
+    self.new(cs_client).subscribe(channel, listener)
   end
 
   def initialize(cs_client)
@@ -15,8 +15,8 @@ class CentralServiceInterface
     central_service_client.new.request(action,object)
   end
 
-  def subscribe(channel, listener, options)
-    central_service_client.new.subscribe(channel, listener, options)
+  def subscribe(channel, listener)
+    central_service_client.new.subscribe(channel, listener)
   end
 
   private

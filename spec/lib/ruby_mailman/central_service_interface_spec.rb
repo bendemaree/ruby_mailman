@@ -22,13 +22,12 @@ RSpec.describe CentralServiceInterface do
     before do
       @channel = "channel#{rand}"
       @listener = Object.new
-      @options = {}
     end
 
     it "uses the provided client to subscribe" do
       expect(client_class_double).to receive(:new) { client_double }
-      expect(client_double).to receive(:subscribe).with(@channel, @listener, @options) { true }
-      CentralServiceInterface.subscribe(@channel, @listener, @options, client_class_double)
+      expect(client_double).to receive(:subscribe).with(@channel, @listener) { true }
+      CentralServiceInterface.subscribe(@channel, @listener, client_class_double)
     end
   end
 end

@@ -11,7 +11,7 @@ class ZMQClient
     configuration.response.recv_string(connection)
   end
 
-  def subscribe(channel, listener, options)
+  def subscribe(channel, listener)
     #connect(:subscribe)
     #connect.setsockopt(ZMQ::SUBSCRIBE, channel)
   end
