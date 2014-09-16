@@ -86,21 +86,22 @@ RSpec.describe ZMQConnection do
       allow(ZMQ::Context).to receive(:new) { context_double }
       allow(context_double).to receive(:socket) { connection_double }
       allow(connection_double).to receive(:connect) { true }
+      @connection_method = [:request, :subscribe].sample
     end
 
     it "gets a ZMQ context" do
       expect(ZMQ::Context).to receive(:new) { context_double }
-      ZMQConnection.new.connect
+      ZMQConnection.new.connect(@connection_method)
     end
 
     it "establishes a socket" do
       expect(context_double).to receive(:socket).with(ZMQ::REQ) { connection_double }
-      ZMQConnection.new.connect
+      ZMQConnection.new.connect(@connection_method)
     end
 
     it "connects to the socket" do
       expect(connection_double).to receive(:connect) { true }
-      ZMQConnection.new.connect
+      ZMQConnection.new.connect(@connection_method)
     end
   end
 end
