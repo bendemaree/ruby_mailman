@@ -7,21 +7,28 @@
 
 ## Sending Messages
 
+Central Services will expect objects to be serialized [protobuf objects](https://github.umn.edu/umnapi/protobufs). If you send other types of objects in your messages it probably will not work.
+
 ```ruby
-class Key
+module Interfaces
+  class Auth < ::Protobuf::Message
+    defined_in __FILE__
+    optional :string, :email, 2
+    optional :string, :public_key, 3
+    optional :string, :private_key, 4
+  end
 end
 
-k = Key.new
-Mailman = RubyMailman::Mailman
+auth = Interfaces::Auth.new
+message = auth.serialize_to_string
 
-Mailman.send(:create, k)
-Mailman.send(:update, k)
-Mailman.send(:destroy, k)
+RubyMailman::Mailman.send(:create, message)
+RubyMailman::Mailman.send(:update, message)
+RubyMailman::Mailman.send(:destroy, message)
 
-Mailman.create(k)
-Mailman.update(k)
-Mailman.destroy(k)
-
+RubyMailman::Mailman.create(message)
+RubyMailman::Mailman.update(message)
+RubyMailman::Mailman.destroy(message)
 ```
 
 ### Responses
@@ -107,8 +114,6 @@ RubyMailman::Subscription.subscribe(channel: :key, listener: my_listener)
 
 - Add `gem ruby_mailman` to your service
 - `bundle install`
-
-It is expected that your service already has the compiled [protobuf objects](https://github.umn.edu/umnapi/protobufs). Mailman will only be able to work with these objects.
 
 ## Development
 
