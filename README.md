@@ -89,7 +89,7 @@ class MyListener
 end
 
 
-RubyMailman::Subscription.subscribe(channel: :key, listener: MyListener.new, options: options)
+RubyMailman::Subscription.subscribe(channel: :key, listener: MyListener.new)
 #=> true
 ```
 
@@ -99,7 +99,7 @@ Since lambdas respond to `call`, you can do
 
 ```ruby
 my_listener = lambda{ |channel, message| #your code }
-RubyMailman::Subscription.subscribe(channel: :key, listener: my_listener, options: options)
+RubyMailman::Subscription.subscribe(channel: :key, listener: my_listener)
 #=> true
 ```
 
