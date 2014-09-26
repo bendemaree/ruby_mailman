@@ -110,6 +110,40 @@ RubyMailman::Subscription.subscribe(channel: :key, listener: my_listener)
 #=> true
 ```
 
+### Subscription Messages
+
+Your listener will receive `call` with  the channel and the message. The message is an instance of RubyMailman::Subscription::Message and responds to:
+
+- channel: the channel again
+- action: `create`, `update` or `destroy`
+- content: A serialized protobuff object
+
+This is a very specific message, since it's really only designed to do one thing -- tell your service about new/changed/destroyed objects. Let's look at an example of a service that care about Auth objects, and it locally persists those Auth objects as LocalAuth:
+
+```ruby
+class AuthListener
+  def call(channel, message)
+    a = Interfaces::Auth.new
+    a.parse_from_string(message.content)
+
+    AuthLogger.log("Message received on #{message.channel} telling me to #{message.action} the object #{a.to_s}")
+
+    case message.action
+    when 'create'
+      LocalAuth.new(a).save #We'll leave the implementation of LocalAuth to your imagination.
+    when 'update'
+      LocalAuth.replace(a)
+    when 'destroy'
+      LocalAuth.destroy(a)
+    else
+      raise ArgumentError
+    end
+  end
+end
+
+RubyMailman::Subscription.new(channel: Auth, listener: AuthListener.new)
+```
+
 ## Setup
 
 - Add `gem ruby_mailman` to your service
