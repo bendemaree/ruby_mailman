@@ -12,11 +12,11 @@ class CentralServiceInterface
   end
 
   def send(action,object)
-    central_service_client.new.request(action,object)
+    central_service_client.request(action,object)
   end
 
   def subscribe(channel, listener)
-    central_service_client.new.subscribe(channel, listener)
+    central_service_client.subscribe(channel, listener)
   end
 
   private

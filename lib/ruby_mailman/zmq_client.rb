@@ -1,94 +1,50 @@
 require 'ffi-rzmq'
 
-class ZMQClient
-  def initialize(configuration = ZMQClientConfiguration.default)
-    self.configuration = configuration
-  end
-
-  def request(action, object)
-    connect(:request)
-    configuration.request.send_strings(connection, [action.to_s, object.to_s])
-    configuration.response.recv_string(connection)
-  end
-
-  def subscribe(channel, listener)
-    #connect(:subscribe)
-    #connect.setsockopt(ZMQ::SUBSCRIBE, channel)
-  end
-
-  private
-
-  def connect(type)
-    self.connection = configuration.connection.connect(type)
-  end
-
-  attr_accessor :connection, :configuration
-end
-
-class ZMQClientConfiguration
-  attr_reader :connection, :request, :response
-
-  def self.default
-    self.build(ZMQConnection, ZMQRequest, ZMQResponse)
-  end
-
-  def self.build(connection_builder, request_builder, response_builder)
-    self.new(connection_builder.build, request_builder.build, response_builder.build)
-  end
-
-  def initialize(connection, request, response)
-    self.connection = connection
-    self.request = request
-    self.response = response
-  end
-
-  private
-  attr_writer :connection, :request, :response
-end
-
-class ZMQConnection
-  def self.build
-    self.new
-  end
-
-  def initialize(server = String.new)
-    self.context = ZMQ::Context.new
-    self.server = server
-  end
-
-  def connect(type)
-    case type
-    when :request
-      connection = context.socket(ZMQ::REQ)
-    when :subscribe
-      connection = context.socket(ZMQ::SUB)
-    end
-    connection.connect('tcp://127.0.0.1:2200')
-    connection
-  end
-
-  private
-
-  attr_accessor :context, :connection, :server
-end
-
-class ZMQRequest
-  def self.build
-    self.new
-  end
-
-  def send_strings(connection, strings, flags = 0)
-    connection.send_strings(strings, flags)
+class ZMQConfiguration
+  def self.server
+    ENV['0MQServerAddress'] || "tcp://localhost:6666"
   end
 end
 
-class ZMQResponse
-  def self.build
-    self.new
-  end
-
-  def recv_string(connection,receiver = "")
+class ZMQRequestClient
+  def self.run(action, object)
+    context = ZMQ::Context.new
+    connection = context.socket(ZMQ::REQ)
+    connection.connect(ZMQConfiguration.server)
+    connection.send_strings([action.to_s, object.to_s])
+    receiver = ""
     connection.recv_string(receiver)
     receiver
+  end
+end
+
+class ZMQSubscriptionClient
+  def self.run(channel, listener)
+    context = ZMQ::Context.new
+    connection = context.socket(ZMQ::SUB)
+    connection.connect(ZMQConfiguration.server)
+    connection.setsockopt(ZMQ::SUBSCRIBE, channel)
+
+    Thread.new do
+      loop do
+        received_channel = ''
+        connection.recv_string(received_channel)
+        message = []
+        connection.recv_strings(message)
+        listener.call(received_channel, RubyMailman::Subscription::Message.new(received_channel, message))
+      end
+    end
+  end
+end
+
+class ZMQClient
+  attr_reader :connection
+
+  def self.request(action, object)
+    ZMQRequestClient.run(action, object)
+  end
+
+  def self.subscribe(channel, listener)
+    ZMQSubscriptionClient.run(channel, listener)
   end
 end
