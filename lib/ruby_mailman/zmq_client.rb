@@ -40,11 +40,11 @@ end
 class ZMQClient
   attr_reader :connection
 
-  def self.request(action, object)
-    ZMQRequestClient.run(action, object)
+  def self.request(action, object, concrete_client = ZMQRequestClient)
+    concrete_client.run(action, object)
   end
 
-  def self.subscribe(channel, listener)
-    ZMQSubscriptionClient.run(channel, listener)
+  def self.subscribe(channel, listener, concrete_client = ZMQSubscriptionClient)
+    concrete_client.run(channel, listener)
   end
 end
