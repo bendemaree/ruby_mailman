@@ -26,9 +26,15 @@ describe Subscription do
       expect { Subscription.subscribe(args,cs_mock) }.to raise_error(ArgumentError)
     end
 
-    it "uses the Central Service Interfac subscription method" do
+    it "uses the Central Service Interface subscription method" do
       expect(cs_mock).to receive(:subscribe).with(args[:channel], args[:listener])
       Subscription.subscribe(args, cs_mock)
+    end
+
+    it "returns a Subscription instance" do
+      subscription_double = instance_double(Subscription)
+      expect(Subscription).to receive(:new) { subscription_double }
+      expect(Subscription.subscribe(args, cs_mock)).to eq(subscription_double)
     end
   end
 end

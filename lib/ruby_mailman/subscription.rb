@@ -9,16 +9,13 @@ module RubyMailman
         raise ArgumentError, "Subscribtion requries a listener"
       end
 
-      self.new(channel, listener, cs).subscribe
+      self.new(channel, listener, cs)
     end
 
     def initialize(channel, listener, cs)
       self.channel = channel
       self.listener = listener
       self.central_service = cs
-    end
-
-    def subscribe
       central_service.subscribe(channel, listener)
     end
 

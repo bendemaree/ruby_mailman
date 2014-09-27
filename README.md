@@ -97,7 +97,7 @@ end
 
 
 RubyMailman::Subscription.subscribe(channel: :key, listener: MyListener.new)
-#=> true
+#=> #<RubyMailman::Subscription:0x007fa2d3835978 ...>
 ```
 
 #### Listener Lambda
@@ -107,7 +107,7 @@ Since lambdas respond to `call`, you can do
 ```ruby
 my_listener = lambda{ |channel, message| #your code }
 RubyMailman::Subscription.subscribe(channel: :key, listener: my_listener)
-#=> true
+#=> #<RubyMailman::Subscription:0x007fa2d3835978 ...>
 ```
 
 ### Subscription Messages
