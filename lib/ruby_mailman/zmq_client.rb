@@ -19,7 +19,7 @@ class ZMQRequestClient
 end
 
 class ZMQSubscriptionClient
-  def self.run(channel, listener)
+  def self.run(channel, listener, message_builder = RubyMailman::Subscription::Message)
     context = ZMQ::Context.new
     connection = context.socket(ZMQ::SUB)
     connection.connect(ZMQConfiguration.server)
@@ -31,7 +31,7 @@ class ZMQSubscriptionClient
         connection.recv_string(received_channel)
         message = []
         connection.recv_strings(message)
-        listener.call(received_channel, RubyMailman::Subscription::Message.new(received_channel, message))
+        listener.call(received_channel, message_builder.new(received_channel, message))
       end
     end
   end
