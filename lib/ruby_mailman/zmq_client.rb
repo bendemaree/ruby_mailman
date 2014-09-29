@@ -11,7 +11,7 @@ class ZMQRequestClient
     context = ZMQ::Context.new
     connection = context.socket(ZMQ::REQ)
     connection.connect(ZMQConfiguration.server)
-    connection.send_strings([action.to_s, object.to_s])
+    connection.send_strings([action, object])
     receiver = ""
     connection.recv_string(receiver)
     receiver
