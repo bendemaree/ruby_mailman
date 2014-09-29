@@ -128,7 +128,7 @@ This is a very specific message, since it's really only designed to do one thing
 class AuthListener
   def call(channel, message)
     a = Interfaces::Auth.new
-    a.parse_from_string(message.content)
+    a.decode(message.content)
 
     AuthLogger.log("Message received on #{message.channel} telling me to #{message.action} the object #{a.to_s}")
 
