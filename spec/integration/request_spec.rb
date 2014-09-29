@@ -1,9 +1,5 @@
 require 'spec_helper'
 
-require 'rubygems'
-require 'ffi-rzmq'
-require 'protobuf'
-require_relative 'zmq_server'
 require_relative '../../lib/ruby_mailman'
 require_relative '../models/auth.pb'
 require_relative "../zmq_servers/reply"
