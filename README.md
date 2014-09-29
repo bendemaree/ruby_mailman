@@ -10,17 +10,21 @@
 Central Services will expect objects to be serialized [protobuf objects](https://github.umn.edu/umnapi/protobufs). If you send other types of objects in your messages it probably will not work.
 
 ```ruby
+
 module Interfaces
-  class Auth < ::Protobuf::Message
-    defined_in __FILE__
+  class Auth < ::Protobuf::Message; end
+
+  class Auth
     optional :string, :email, 2
     optional :string, :public_key, 3
     optional :string, :private_key, 4
   end
+
 end
 
+
 auth = Interfaces::Auth.new
-message = auth.serialize_to_string
+message = auth.encode
 
 RubyMailman::Mailman.send(:create, message)
 RubyMailman::Mailman.send(:update, message)
