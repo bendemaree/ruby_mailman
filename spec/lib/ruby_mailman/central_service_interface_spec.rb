@@ -4,7 +4,7 @@ require_relative "../../../lib/ruby_mailman"
 RSpec.describe CentralServiceInterface do
   let (:client_class_double) { class_double(ZMQClient) }
 
-  describe "self.send" do
+  describe "self.deliver" do
     before do
       @action = "action#{rand}"
       @object = Object.new
@@ -12,7 +12,7 @@ RSpec.describe CentralServiceInterface do
 
     it "uses the provided client to make a request" do
       expect(client_class_double).to receive(:request).with(@action, @object) { true }
-      CentralServiceInterface.send(@action,@object,client_class_double)
+      CentralServiceInterface.deliver(@action,@object,client_class_double)
     end
   end
 

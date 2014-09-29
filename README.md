@@ -26,9 +26,9 @@ end
 auth = Interfaces::Auth.new
 message = auth.encode
 
-RubyMailman::Mailman.send(:create, message)
-RubyMailman::Mailman.send(:update, message)
-RubyMailman::Mailman.send(:destroy, message)
+RubyMailman::Mailman.deliver(:create, message)
+RubyMailman::Mailman.deliver(:update, message)
+RubyMailman::Mailman.deliver(:destroy, message)
 
 RubyMailman::Mailman.create(message)
 RubyMailman::Mailman.update(message)
@@ -45,7 +45,7 @@ Central Services has 3 types of response:
 #### Success
 
 ```ruby
-response = Mailman.send(:create, obj)
+response = Mailman.deliver(:create, obj)
 response.success?
 #=> true
 response.retry?
@@ -59,7 +59,7 @@ response.body
 #### Retry
 
 ```ruby
-response = Mailman.send(:create, obj)
+response = Mailman.deliver(:create, obj)
 response.success?
 #=> false
 response.retry?
@@ -73,7 +73,7 @@ response.body
 #### Failure
 
 ```ruby
-response = Mailman.send(:create, obj)
+response = Mailman.deliver(:create, obj)
 response.success?
 #=> false
 response.retry?

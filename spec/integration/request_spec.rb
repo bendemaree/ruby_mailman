@@ -25,10 +25,10 @@ RSpec.describe "Making requests" do
       Process.kill("KILL", @pid)
     end
 
-    it "returns non nil when using the .send method" do
-      expect(RubyMailman::Mailman.send(:create, auth.encode)).not_to be_nil
-      expect(RubyMailman::Mailman.send(:update, auth.encode)).not_to be_nil
-      expect(RubyMailman::Mailman.send(:destroy, auth.encode)).not_to be_nil
+    it "returns non nil when using the .deliver method" do
+      expect(RubyMailman::Mailman.deliver(:create, auth.encode)).not_to be_nil
+      expect(RubyMailman::Mailman.deliver(:update, auth.encode)).not_to be_nil
+      expect(RubyMailman::Mailman.deliver(:destroy, auth.encode)).not_to be_nil
     end
 
     it "returns non nil when using the named method" do
@@ -53,10 +53,10 @@ RSpec.describe "Making requests" do
       end
 
       it "Requests get a sucessful response" do
-        expect(RubyMailman::Mailman.send(:create, auth.encode).success?).to be_truthy
-        expect(RubyMailman::Mailman.send(:create, auth.encode).retry?).to be_falsey
-        expect(RubyMailman::Mailman.send(:create, auth.encode).fail?).to be_falsey
-        expect(RubyMailman::Mailman.send(:create, auth.encode).body).to eq("200")
+        expect(RubyMailman::Mailman.deliver(:create, auth.encode).success?).to be_truthy
+        expect(RubyMailman::Mailman.deliver(:create, auth.encode).retry?).to be_falsey
+        expect(RubyMailman::Mailman.deliver(:create, auth.encode).fail?).to be_falsey
+        expect(RubyMailman::Mailman.deliver(:create, auth.encode).body).to eq("200")
       end
     end
 
@@ -74,10 +74,10 @@ RSpec.describe "Making requests" do
       end
 
       it "Requests get a retry response" do
-        expect(RubyMailman::Mailman.send(:create, auth.encode).success?).to be_falsey
-        expect(RubyMailman::Mailman.send(:create, auth.encode).retry?).to be_truthy
-        expect(RubyMailman::Mailman.send(:create, auth.encode).fail?).to be_falsey
-        expect(RubyMailman::Mailman.send(:create, auth.encode).body).to eq("409")
+        expect(RubyMailman::Mailman.deliver(:create, auth.encode).success?).to be_falsey
+        expect(RubyMailman::Mailman.deliver(:create, auth.encode).retry?).to be_truthy
+        expect(RubyMailman::Mailman.deliver(:create, auth.encode).fail?).to be_falsey
+        expect(RubyMailman::Mailman.deliver(:create, auth.encode).body).to eq("409")
       end
     end
 
@@ -95,10 +95,10 @@ RSpec.describe "Making requests" do
       end
 
       it "Requests get a failure response" do
-        expect(RubyMailman::Mailman.send(:create, auth.encode).success?).to be_falsey
-        expect(RubyMailman::Mailman.send(:create, auth.encode).retry?).to be_falsey
-        expect(RubyMailman::Mailman.send(:create, auth.encode).fail?).to be_truthy
-        expect(RubyMailman::Mailman.send(:create, auth.encode).body).to eq("500")
+        expect(RubyMailman::Mailman.deliver(:create, auth.encode).success?).to be_falsey
+        expect(RubyMailman::Mailman.deliver(:create, auth.encode).retry?).to be_falsey
+        expect(RubyMailman::Mailman.deliver(:create, auth.encode).fail?).to be_truthy
+        expect(RubyMailman::Mailman.deliver(:create, auth.encode).body).to eq("500")
       end
     end
   end

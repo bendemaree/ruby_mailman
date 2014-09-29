@@ -1,19 +1,19 @@
 module RubyMailman
   class Mailman
-    def self.send(action, obj, cs = CentralServiceInterface)
-      self.new(action.to_s, obj, cs).send
+    def self.deliver(action, obj, cs = CentralServiceInterface)
+      self.new(action, obj, cs).deliver
     end
 
-    def self.create(obj, cs=CentralServiceInterface)
-      self.send(:create, obj, cs)
+    def self.create(obj, cs = CentralServiceInterface)
+      self.deliver(:create, obj, cs)
     end
 
-    def self.update(obj, cs=CentralServiceInterface)
-      self.send(:update, obj, cs)
+    def self.update(obj, cs = CentralServiceInterface)
+      self.deliver(:update, obj, cs)
     end
 
-    def self.destroy(obj, cs=CentralServiceInterface)
-      self.send(:destroy, obj, cs)
+    def self.destroy(obj, cs = CentralServiceInterface)
+      self.deliver(:destroy, obj, cs)
     end
 
     def initialize(action, object, central_service)
@@ -22,8 +22,8 @@ module RubyMailman
       self.central_service = central_service
     end
 
-    def send
-      Response.build(central_service.send(action, object))
+    def deliver
+      Response.build(central_service.deliver(action.to_s, object))
     end
 
     private
