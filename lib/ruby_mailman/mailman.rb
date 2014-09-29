@@ -1,7 +1,7 @@
 module RubyMailman
   class Mailman
     def self.send(action, obj, cs = CentralServiceInterface)
-      self.new(action, obj, cs).send
+      self.new(action.to_s, obj, cs).send
     end
 
     def self.create(obj, cs=CentralServiceInterface)
