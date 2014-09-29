@@ -151,13 +151,23 @@ RubyMailman::Subscription.new(channel: Auth, listener: AuthListener.new)
 ## Setup
 
 - Add `gem ruby_mailman` to your service
-- `bundle install`
+- `bundle install --path ./vendor/bundle`
+
+## Local Setup and Running Tests
+
+- Clone the repo
+- `bundle install --path ./vendor/bundle`
+- `bundle exec rake`
 
 ## Development
 
 To work on the gem:
 
-- Clone this repo
-- run `bundle install --path ./vendor/bundle`
-- run `bundle exec rake setup_development`
-- run `bundle exec rake` to run all the tests and make sure all is well
+- Fork this repo
+- Submit your changes through a pull request
+- Tests are required for any pull requests
+
+## License
+
+© Regents of the University of Minnesota. All rights reserved.
+
