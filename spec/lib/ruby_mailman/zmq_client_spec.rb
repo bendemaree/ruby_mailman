@@ -33,10 +33,14 @@ RSpec.describe ZMQRequestClient do
       reply_randomizer = rand
       @server_configuration = {
         port: 6666,
-        reply: -> {"reply #{reply_randomizer}"}
+        reply: -> {"reply #{reply_randomizer}"},
+        publish_delay: 0.03
       }
       @pid = TestServer::Reply.run_as_process(@server_configuration)
-    end
+      @test_delay = @server_configuration[:publish_delay] * 2
+      #wait so the publisher process can get rolling
+      sleep(@test_delay)
+     end
 
     it "returns a reply" do
       action = 'action'
@@ -61,9 +65,12 @@ RSpec.describe ZMQSubscriptionClient do
         channel: "mychannel",
         port: 6666,
         message_parts: ["published message", rand(20).to_s],
-        publish_delay: 0.01
+        publish_delay: 0.03
       }
       @pid = TestServer::Publish.run_as_process(@server_configuration)
+      @test_delay = @server_configuration[:publish_delay] * 2
+      #wait so the publisher process can get rolling
+      sleep(@test_delay)
     end
 
     it "Creates a Message and then calls the listener" do
@@ -71,8 +78,7 @@ RSpec.describe ZMQSubscriptionClient do
       expect(message_builder).to receive(:new).at_least(:once).with(@server_configuration[:channel],@server_configuration[:message_parts]) { message }
       expect(listener).to receive(:call).at_least(:once).with(@server_configuration[:channel], message)
       ZMQSubscriptionClient.run(@server_configuration[:channel], listener, message_builder)
-      #You have to wait for the publisher to publish someting. Setting sleep lower than this results in random test errors.
-      sleep(@server_configuration[:publish_delay] * 1.2)
+      sleep(@test_delay)
     end
 
     after(:example) do
