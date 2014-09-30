@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["whit0694@umn.edu"]
   spec.summary       = %q{A ruby library for connecting to Central Service}
   spec.description   = %q{Ruby implementation of the Central Service interface. Meant for use with UMN API Services written in Ruby.}
-  spec.homepage      = "https://github.umn.edu/umnapi/ruby_mailman/"
+  spec.homepage      = "https://github.com/umnapi/ruby_mailman"
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
@@ -18,8 +18,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.6"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "protobuf"
+  spec.add_development_dependency "rake", "~> 10.3"
+  spec.add_development_dependency "protobuf", "~> 3.3"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "ffi-rzmq"
+  spec.add_development_dependency "ffi-rzmq", "~> 2.0"
 end
