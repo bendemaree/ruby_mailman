@@ -2,7 +2,7 @@ require 'ffi-rzmq'
 
 class ZMQConfiguration
   def self.server
-    ENV['0MQServerAddress'] || "tcp://localhost:6666"
+    ENV['ZEROMQ_SERVER_ADDRESS'] || "tcp://localhost:6666"
   end
 end
 
